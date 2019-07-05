@@ -10,7 +10,11 @@ import com.study.droolscore.domain.ShoppingCar;
 
 template "plans"
 
-rule "plan-@{row.rowNumber}" when
+
+rule "plan-@{row.rowNumber}"
+  salience -1
+  no-loop true
+  when
       $shoppingCar:ShoppingCar($foods:buyList)
       List(size==@{buyListSize}) from collect(Food((@{fooPromotion} contains name)) from $foods)
   then

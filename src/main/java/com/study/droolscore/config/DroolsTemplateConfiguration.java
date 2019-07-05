@@ -4,6 +4,7 @@ import com.study.droolscore.domain.TemplateForBillRules;
 import org.drools.template.ObjectDataCompiler;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
+import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.utils.KieHelper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,8 +33,13 @@ public class DroolsTemplateConfiguration {
         ObjectDataCompiler objectDataCompiler = new ObjectDataCompiler();
         List<TemplateForBillRules> templates = templates();
         for (Resource resource : getRuleFiles()) {
-            String drl = objectDataCompiler.compile(templates, resource.getInputStream());
-            kieHelper.addContent(drl, ResourceType.DRL);
+            String drl = null;
+            if (resource.getFilename().endsWith("drt")) {
+                drl = objectDataCompiler.compile(templates, resource.getInputStream());
+                kieHelper.addContent(drl, ResourceType.DRL);
+            } else {
+                kieHelper.addResource(ResourceFactory.newClassPathResource(RULES_PATH + resource.getFilename(), "UTF-8"));
+            }
         }
         return kieHelper.build().newKieSession();
     }
@@ -50,6 +56,6 @@ public class DroolsTemplateConfiguration {
 
     private Resource[] getRuleFiles() throws IOException {
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-        return resourcePatternResolver.getResources("classpath*:" + RULES_PATH + "**/*.drt");
+        return resourcePatternResolver.getResources("classpath*:" + RULES_PATH + "**/*.*");
     }
 }

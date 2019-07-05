@@ -1,0 +1,11 @@
+package rules;
+import com.study.droolscore.domain.Food;
+import java.util.List;
+import com.study.droolscore.domain.ShoppingCar;
+rule "plan-A" when
+      $shoppingCar:ShoppingCar($foods:buyList)
+      List(size==3) from collect(Food((["巨无霸","可乐","薯条"] contains name)) from $foods)
+  then
+    $shoppingCar.setTotalMoney(17D);
+  end
+

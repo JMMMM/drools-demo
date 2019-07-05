@@ -1,0 +1,19 @@
+template header
+fooPromotion
+pricePromotion
+buyListSize
+
+package rules;
+import com.study.droolscore.domain.Food;
+import java.util.List;
+import com.study.droolscore.domain.ShoppingCar;
+
+template "plans"
+
+rule "plan-@{row.rowNumber}" when
+      $shoppingCar:ShoppingCar($foods:buyList)
+      List(size==@{buyListSize}) from collect(Food((@{fooPromotion} contains name)) from $foods)
+  then
+    $shoppingCar.setTotalMoney(@{pricePromotion});
+  end
+end template

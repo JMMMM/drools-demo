@@ -12,7 +12,7 @@ import com.study.droolscore.domain.ShoppingCar;
 //    $shoppingCar.getRules().add(drools.getRule().getName());
 //  end
 
-rule "没有套餐，正常付款"
+rule "没有套餐"
   salience -1
   no-loop true
   when

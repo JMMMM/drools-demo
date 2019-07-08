@@ -3,6 +3,7 @@ package com.study.droolscore.domain;
 /**
  * com.study.droolscore.food
  *
+ * 具体食品类
  * @author jimmy
  * @date 2019-07-05
  */

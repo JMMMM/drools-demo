@@ -46,10 +46,9 @@ public class DroolsTemplateConfiguration {
 
     private List<TemplateForBillRules> templates() {
         List<TemplateForBillRules> templates = new ArrayList<>();
-        TemplateForBillRules templateForBillRules = new TemplateForBillRules(Arrays.asList("\"巨无霸\"", "\"可乐\"", "\"薯条\""), 17D, 3);
+        TemplateForBillRules templateForBillRules = new TemplateForBillRules(Arrays.asList("\"巨无霸\"", "\"可乐\"", "\"薯条\""), 17D, 3, "麦当劳经典组合");
         templates.add(templateForBillRules);
-
-        TemplateForBillRules templateForBillRules2 = new TemplateForBillRules(Arrays.asList("\"巨无霸\"", "\"可乐\""), 10D, 2);
+        TemplateForBillRules templateForBillRules2 = new TemplateForBillRules(Arrays.asList("\"巨无霸\"", "\"可乐\""), 10D, 2,"麦当劳测试组合");
         templates.add(templateForBillRules2);
         return templates;
     }

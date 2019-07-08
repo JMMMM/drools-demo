@@ -2,6 +2,7 @@ template header
 fooPromotion
 pricePromotion
 buyListSize
+templateName
 
 package rules;
 import com.study.droolscore.domain.Food;
@@ -11,7 +12,7 @@ import com.study.droolscore.domain.ShoppingCar;
 template "plans"
 
 
-rule "plan-@{row.rowNumber}"
+rule "@{templateName}"
   salience 0
   no-loop true
   when
@@ -19,5 +20,7 @@ rule "plan-@{row.rowNumber}"
       List(size==@{buyListSize}) from collect(Food((@{fooPromotion} contains name)) from $foods)
   then
     $shoppingCar.setTotalMoney(@{pricePromotion});
+    $shoppingCar.getRules().add(drools.getRule().getName());
+    update($shoppingCar);
   end
 end template

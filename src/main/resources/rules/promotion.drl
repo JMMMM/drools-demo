@@ -1,0 +1,16 @@
+package rules;
+import com.study.droolscore.domain.ShoppingCar;
+import com.study.droolscore.utils.DateUtils;
+import java.util.Date;
+
+rule "周一活动"
+    salience -2
+    no-loop true
+    when
+        $shoppingCar:ShoppingCar(DateUtils.checkWeekDay(createTime,2))
+    then
+        $shoppingCar.setTotalMoney($shoppingCar.getTotalMoney()*0.85);
+        $shoppingCar.getRules().add(drools.getRule().getName());
+        update($shoppingCar);
+    end
+

@@ -31,6 +31,7 @@ public class DroolsCoreApplicationTests {
         kieSession.insert(shoppingCar);
         kieSession.fireAllRules();
         System.out.println(shoppingCar.getTotalMoney());
+        System.out.println("调用链：" + shoppingCar.getRules().toString());
     }
 
 }

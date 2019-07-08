@@ -3,25 +3,27 @@ import com.study.droolscore.domain.Food;
 import java.util.List;
 import com.study.droolscore.domain.ShoppingCar;
 
-rule "plan-A" when
-      $shoppingCar:ShoppingCar($foods:buyList)
-      List(size==3) from collect(Food((["巨无霸","可乐","薯条"] contains name)) from $foods)
-  then
-    $shoppingCar.setTotalMoney(17D);
-  end
+//这里是第一次演示用的
+//rule "plan-A" when
+//      $shoppingCar:ShoppingCar($foods:buyList)
+//      List(size==3) from collect(Food((["巨无霸","可乐","薯条"] contains name)) from $foods)
+//  then
+//    $shoppingCar.setTotalMoney(17D);
+//    $shoppingCar.getRules().add(drools.getRule().getName());
+//  end
 
-rule "plan-other"
+rule "没有套餐，正常付款"
   salience -1
   no-loop true
   when
-       $shoppingCar:ShoppingCar($foods:buyList)
+       $shoppingCar:ShoppingCar($foods:buyList,totalMoney==null)
        $money:Number() from accumulate(Food($price:price) from $foods,
              init(double total = 0;),
              action(total+=$price;),
              result(new Double(total)))
   then
         $shoppingCar.setTotalMoney($money.doubleValue());
+        $shoppingCar.getRules().add(drools.getRule().getName());
+        update($shoppingCar);
   end
-
-
 

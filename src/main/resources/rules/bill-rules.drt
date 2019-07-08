@@ -11,7 +11,6 @@ import com.study.droolscore.domain.ShoppingCar;
 
 template "plans"
 
-
 rule "@{templateName}"
   salience 0
   no-loop true

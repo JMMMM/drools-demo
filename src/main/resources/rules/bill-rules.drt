@@ -14,6 +14,7 @@ template "plans"
 rule "@{templateName}"
   salience 0
   no-loop true
+  lock-on-active true
   when
       $shoppingCar:ShoppingCar($foods:buyList)
       List(size==@{buyListSize}) from collect(Food((@{fooPromotion} contains name)) from $foods)

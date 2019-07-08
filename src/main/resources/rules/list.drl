@@ -15,6 +15,7 @@ import com.study.droolscore.domain.ShoppingCar;
 rule "没有套餐"
   salience -1
   no-loop true
+  lock-on-active true
   when
        $shoppingCar:ShoppingCar($foods:buyList,totalMoney==null)
        $money:Number() from accumulate(Food($price:price) from $foods,

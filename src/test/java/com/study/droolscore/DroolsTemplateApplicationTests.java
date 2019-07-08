@@ -31,6 +31,7 @@ public class DroolsTemplateApplicationTests {
 
     @Test
     public void testHelloWord() {
+        kieSession2.getAgenda().getAgendaGroup("foods_combine").setFocus();
         kieSession2.insert(shoppingCar);
         kieSession2.fireAllRules();
         System.out.println(shoppingCar.getTotalMoney());

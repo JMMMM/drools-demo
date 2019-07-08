@@ -18,7 +18,7 @@ rule "@{templateName}"
   agenda-group "foods_combine"
   when
       $shoppingCar:ShoppingCar($foods:buyList)
-      List(size==@{buyListSize}) from collect(Food((@{fooPromotion} contains name)) from $foods)
+      List($foods.size()==@{buyListSize}) from collect(Food(@{fooPromotion} contains name) from $foods)
   then
     $shoppingCar.setTotalMoney(@{pricePromotion});
     $shoppingCar.getRules().add(drools.getRule().getName());

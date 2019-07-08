@@ -35,7 +35,7 @@ public class DroolsTemplateApplicationTests {
 
     List<Food> demoB = Arrays.asList(new Food("巨无霸", 17D), new Food("可乐", 17D));
 
-    ShoppingCar shoppingCar = new ShoppingCar(demoB);
+    ShoppingCar shoppingCar = new ShoppingCar(demoA);
 
     @Test
     public void testHelloWord() {

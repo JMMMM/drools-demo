@@ -19,6 +19,13 @@ import java.util.List;
  * 这种情况下无法匹配，这里需要统计一个满足条件的合集，用于给客户端获取最优解。
  * 这里可以通过在shoppingCar中增加map属性，套餐name->totalMoney
  * 做更细致的扩展，这里只是demo，所以暂时不考虑太复杂的情景。
+ * 如果要满足上面要求，需要把
+ * List($foods.size()==@{buyListSize}) from collect(Food(@{fooPromotion} contains name) from $foods)
+ * 改为
+ * List(size==@{buyListSize}) from collect(Food(@{fooPromotion} contains name) from $foods)
+ *
+ * 这里的意思是，购物车中包含的那部分食物的数量，应该和套餐的数量一致。
+ *
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest

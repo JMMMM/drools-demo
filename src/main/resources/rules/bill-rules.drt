@@ -21,5 +21,6 @@ rule "@{templateName}"
     $shoppingCar.setTotalMoney(@{pricePromotion});
     $shoppingCar.getRules().add(drools.getRule().getName());
     update($shoppingCar);
-  end
+end
+
 end template

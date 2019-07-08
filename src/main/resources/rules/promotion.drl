@@ -12,5 +12,5 @@ rule "周一活动"
         $shoppingCar.setTotalMoney($shoppingCar.getTotalMoney()*0.85);
         $shoppingCar.getRules().add(drools.getRule().getName());
         update($shoppingCar);
-    end
+end
 

@@ -10,7 +10,7 @@ import com.study.droolscore.domain.ShoppingCar;
 //  then
 //    $shoppingCar.setTotalMoney(17D);
 //    $shoppingCar.getRules().add(drools.getRule().getName());
-//  end
+//end
 
 rule "没有套餐"
   salience -1
@@ -25,5 +25,5 @@ rule "没有套餐"
         $shoppingCar.setTotalMoney($money.doubleValue());
         $shoppingCar.getRules().add(drools.getRule().getName());
         update($shoppingCar);
-  end
+end
 

@@ -12,7 +12,7 @@ template "plans"
 
 
 rule "plan-@{row.rowNumber}"
-  salience -1
+  salience 0
   no-loop true
   when
       $shoppingCar:ShoppingCar($foods:buyList)

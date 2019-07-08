@@ -11,7 +11,7 @@ rule "plan-A" when
   end
 
 rule "plan-other"
-  salience 100
+  salience -1
   no-loop true
   when
        $shoppingCar:ShoppingCar($foods:buyList)

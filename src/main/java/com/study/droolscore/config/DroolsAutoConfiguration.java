@@ -39,7 +39,7 @@ public class DroolsAutoConfiguration {
 
     private Resource[] getRuleFiles() throws IOException {
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-        return resourcePatternResolver.getResources("classpath*:" + RULES_PATH + "**/*.drl");
+        return resourcePatternResolver.getResources("classpath*:" + RULES_PATH + "**/*.dr");
     }
 
     @Bean

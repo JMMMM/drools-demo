@@ -39,7 +39,7 @@ public class DroolsAutoConfiguration {
 
     private Resource[] getRuleFiles() throws IOException {
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
-        return resourcePatternResolver.getResources("classpath*:" + RULES_PATH + "**/*.dr");
+        return resourcePatternResolver.getResources("classpath*:" + RULES_PATH + "**/*.drl");
     }
 
     @Bean
@@ -64,6 +64,9 @@ public class DroolsAutoConfiguration {
         return new KModuleBeanFactoryPostProcessor();
     }
 
+    //这里本来就是单例模式
+    @Bean
+    @ConditionalOnMissingBean(KieServices.class)
     public KieServices getKieServices() {
         System.setProperty("drools.dateformat", "yyyy-MM-dd");
         return KieServices.Factory.get();

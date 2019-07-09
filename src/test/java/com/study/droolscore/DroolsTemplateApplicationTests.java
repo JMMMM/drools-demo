@@ -38,9 +38,9 @@ public class DroolsTemplateApplicationTests {
     @Autowired
     KieSession kieSession2;
 
-    List<Food> demoA = Arrays.asList(new Food("巨无霸", 17D), new Food("可乐", 17D), new Food("薯条", 17D));
+    List<Food> demoA = Arrays.asList(new Food("巨无霸", 17D), new Food("可口可乐", 17D), new Food("薯条", 17D));
 
-    List<Food> demoB = Arrays.asList(new Food("巨无霸", 17D), new Food("可乐", 17D));
+    List<Food> demoB = Arrays.asList(new Food("巨无霸", 17D), new Food("可口可乐", 17D));
 
     ShoppingCar shoppingCar = new ShoppingCar(demoA);
 

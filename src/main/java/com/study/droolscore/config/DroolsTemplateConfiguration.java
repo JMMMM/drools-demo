@@ -1,11 +1,13 @@
 package com.study.droolscore.config;
 
 import com.study.droolscore.domain.TemplateForBillRules;
+import com.study.droolscore.service.ComboTemplateService;
 import org.drools.template.ObjectDataCompiler;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
 import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.utils.KieHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
@@ -13,8 +15,6 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,13 +27,16 @@ import java.util.List;
 public class DroolsTemplateConfiguration {
     private static final String RULES_PATH = "rules/";
 
+    @Autowired
+    private ComboTemplateService comboTemplateService;
+
     @Bean
     public KieSession kieSession2() throws IOException {
         KieHelper kieHelper = new KieHelper();
         ObjectDataCompiler objectDataCompiler = new ObjectDataCompiler();
-        List<TemplateForBillRules> templates = templates();
+        List<TemplateForBillRules> templates = comboTemplateService.createTemplate();
         for (Resource resource : getRuleFiles()) {
-            String drl = null;
+            String drl;
             if (resource.getFilename().endsWith("drt")) {
                 drl = objectDataCompiler.compile(templates, resource.getInputStream());
                 kieHelper.addContent(drl, ResourceType.DRL);
@@ -42,15 +45,6 @@ public class DroolsTemplateConfiguration {
             }
         }
         return kieHelper.build().newKieSession();
-    }
-
-    private List<TemplateForBillRules> templates() {
-        List<TemplateForBillRules> templates = new ArrayList<>();
-        TemplateForBillRules templateForBillRules = new TemplateForBillRules(Arrays.asList("\"巨无霸\"", "\"可乐\"", "\"薯条\""), 17D, 3, "麦当劳经典组合");
-        templates.add(templateForBillRules);
-        TemplateForBillRules templateForBillRules2 = new TemplateForBillRules(Arrays.asList("\"巨无霸\"", "\"可乐\""), 10D, 2,"麦当劳测试组合");
-        templates.add(templateForBillRules2);
-        return templates;
     }
 
     private Resource[] getRuleFiles() throws IOException {

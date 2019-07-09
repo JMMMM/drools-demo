@@ -1,7 +1,9 @@
 package com.study.droolscore;
 
+import com.study.droolscore.dao.FoodDao;
 import com.study.droolscore.domain.Food;
 import com.study.droolscore.domain.ShoppingCar;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.api.runtime.KieSession;
@@ -23,9 +25,8 @@ import java.util.List;
  * List($foods.size()==@{buyListSize}) from collect(Food(@{fooPromotion} contains name) from $foods)
  * 改为
  * List(size==@{buyListSize}) from collect(Food(@{fooPromotion} contains name) from $foods)
- *
+ * <p>
  * 这里的意思是，购物车中包含的那部分食物的数量，应该和套餐的数量一致。
- *
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,11 +39,19 @@ public class DroolsTemplateApplicationTests {
     @Autowired
     KieSession kieSession2;
 
-    List<Food> demoA = Arrays.asList(new Food("巨无霸", 17D), new Food("可口可乐", 17D), new Food("薯条", 17D));
+    @Autowired
+    FoodDao foodDao;
 
-    List<Food> demoB = Arrays.asList(new Food("巨无霸", 17D), new Food("可口可乐", 17D));
+    ShoppingCar shoppingCar;
 
-    ShoppingCar shoppingCar = new ShoppingCar(demoA);
+    @Before
+    public void init() {
+        //巨无霸套餐
+//        List<Food> demo = foodDao.findAllById(Arrays.asList(1, 2, 5));
+//        //无套餐
+        List<Food> demo = foodDao.findAllById(Arrays.asList(2, 5));
+        shoppingCar = new ShoppingCar(demo);
+    }
 
     @Test
     public void testHelloWord() {

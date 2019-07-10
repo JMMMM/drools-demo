@@ -1,9 +1,10 @@
 template header
 foodNames
 foods
-pricePromotion
+comboPrice
 buyListSize
 templateName
+promotionPrice
 
 package rules;
 import com.study.droolscore.domain.Food;
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 template "plans"
 
 rule "@{templateName}"
-  salience 0
+  salience @{promotionPrice}
   no-loop true
   lock-on-active true
   agenda-group "foods_combine"
@@ -22,7 +23,7 @@ rule "@{templateName}"
       $combineList:List(size==@{buyListSize}) from collect(Food(@{foodNames} contains name) from $foods)
   then
       $shoppingCar.getLeftList().removeAll($combineList);
-      BigDecimal $totalMoney = $shoppingCar.getTotalMoney().add(new BigDecimal(@{pricePromotion}));
+      BigDecimal $totalMoney = $shoppingCar.getTotalMoney().add(new BigDecimal(@{comboPrice}));
       $shoppingCar.setTotalMoney($totalMoney);
       $shoppingCar.getRules().add(drools.getRule().getName());
       update($shoppingCar);

@@ -15,19 +15,22 @@ import java.util.stream.Collectors;
 public class TemplateForBillRules {
     private List<Food> foods;
     private List<String> foodNames;
-    private BigDecimal pricePromotion;
+    private BigDecimal comboPrice;
     private Integer buyListSize;
     private String templateName;
+    //foods.price.sum - comboPrice
+    private int promotionPrice;
 
     public TemplateForBillRules() {
     }
 
-    public TemplateForBillRules(List<Food> foods, BigDecimal pricePromotion, Integer buyListSize, String templateName) {
+    public TemplateForBillRules(List<Food> foods, BigDecimal comboPrice, Integer buyListSize, String templateName) {
         this.foods = foods;
         this.foodNames = foods.stream().map((x) -> "\"" + x.getName() + "\"").collect(Collectors.toList());
-        this.pricePromotion = pricePromotion;
+        this.comboPrice = comboPrice;
         this.buyListSize = buyListSize;
         this.templateName = templateName;
+        this.promotionPrice = this.foods.stream().map(Food::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add).multiply(BigDecimal.valueOf(100)).intValue();
     }
 
     public List<Food> getFoods() {
@@ -46,12 +49,12 @@ public class TemplateForBillRules {
         this.foodNames = foodNames;
     }
 
-    public BigDecimal getPricePromotion() {
-        return pricePromotion;
+    public BigDecimal getComboPrice() {
+        return comboPrice;
     }
 
-    public void setPricePromotion(BigDecimal pricePromotion) {
-        this.pricePromotion = pricePromotion;
+    public void setComboPrice(BigDecimal comboPrice) {
+        this.comboPrice = comboPrice;
     }
 
     public Integer getBuyListSize() {
@@ -68,5 +71,13 @@ public class TemplateForBillRules {
 
     public void setTemplateName(String templateName) {
         this.templateName = templateName;
+    }
+
+    public int getPromotionPrice() {
+        return promotionPrice;
+    }
+
+    public void setPromotionPrice(int promotionPrice) {
+        this.promotionPrice = promotionPrice;
     }
 }

@@ -1,6 +1,5 @@
 package com.study.droolscore.service;
 
-import com.google.common.collect.Maps;
 import com.study.droolscore.dao.DroolsTemplateDao;
 import com.study.droolscore.dao.FoodDao;
 import com.study.droolscore.domain.ComboTemplate;
@@ -9,7 +8,10 @@ import com.study.droolscore.domain.TemplateForBillRules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -29,10 +31,9 @@ public class ComboTemplateService {
 
     public List<TemplateForBillRules> createTemplate() {
         List<ComboTemplate> templates = droolsTemplateDao.findAll();
-        Optional<String> foodIdsStrOpt = templates.stream().map(ComboTemplate::getFoodIds).reduce((x, y) -> x + "," + y);
-        Optional<Set<Integer>> foodIdsOpt = foodIdsStrOpt.map((ids) -> Arrays.asList(ids.split(",")).stream().map(Integer::parseInt).collect(Collectors.toSet()));
-        Optional<Map<Integer, String>> foodsMapOpt = foodIdsOpt.map((foodIds) -> foodDao.findAllById(foodIds).stream().collect(Collectors.toMap(Food::getId, Food::getName)));
-        Map<Integer, String> foodNamesMap = foodsMapOpt.orElse(Maps.newHashMap());
+        String foodIdsStr = templates.stream().map(ComboTemplate::getFoodIds).reduce("", (x, y) -> x + "," + y);
+        Set<Integer> foodIds = Arrays.asList(foodIdsStr.split(",")).stream().map(Integer::parseInt).collect(Collectors.toSet());
+        Map<Integer, String> foodNamesMap = foodDao.findAllById(foodIds).stream().collect(Collectors.toMap(Food::getId, Food::getName));
         return templates.stream().map((template) -> {
             List<String> ids = Arrays.asList(template.getFoodIds().split(","));
             List<String> foodNames = ids.stream().map((id) -> foodNamesMap.getOrDefault(Integer.parseInt(id), "")).collect(Collectors.toList());
@@ -41,7 +42,7 @@ public class ComboTemplateService {
     }
 
     private TemplateForBillRules billRulesConverter(ComboTemplate comboTemplate, List<String> foodNames) {
-        List<String> nameFormatter = foodNames.stream().map((name)->"\""+name+"\"").collect(Collectors.toList());
+        List<String> nameFormatter = foodNames.stream().map((name) -> "\"" + name + "\"").collect(Collectors.toList());
         return new TemplateForBillRules(nameFormatter, comboTemplate.getComboPrice(), comboTemplate.getComboFoodNum(), comboTemplate.getTemplateName());
     }
 }

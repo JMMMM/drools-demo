@@ -1,5 +1,6 @@
 template header
-fooPromotion
+foodNames
+foods
 pricePromotion
 buyListSize
 templateName
@@ -8,7 +9,7 @@ package rules;
 import com.study.droolscore.domain.Food;
 import java.util.List;
 import com.study.droolscore.domain.ShoppingCar;
-
+import java.math.BigDecimal;
 template "plans"
 
 rule "@{templateName}"
@@ -17,12 +18,14 @@ rule "@{templateName}"
   lock-on-active true
   agenda-group "foods_combine"
   when
-      $shoppingCar:ShoppingCar($foods:buyList)
-      List(size==@{buyListSize}) from collect(Food(@{fooPromotion} contains name) from $foods)
+      $shoppingCar:ShoppingCar($foods:leftList,leftList.size()>0)
+      $combineList:List(size==@{buyListSize}) from collect(Food(@{foodNames} contains name) from $foods)
   then
-    $shoppingCar.setTotalMoney(@{pricePromotion});
-    $shoppingCar.getRules().add(drools.getRule().getName());
-    update($shoppingCar);
+      $shoppingCar.getLeftList().removeAll($combineList);
+      BigDecimal $totalMoney = $shoppingCar.getTotalMoney().add(new BigDecimal(@{pricePromotion}));
+      $shoppingCar.setTotalMoney($totalMoney);
+      $shoppingCar.getRules().add(drools.getRule().getName());
+      update($shoppingCar);
 end
 
 end template

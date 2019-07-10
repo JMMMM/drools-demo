@@ -1,6 +1,8 @@
 package com.study.droolscore.domain;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -13,34 +15,34 @@ import java.util.List;
  * @date 2019-07-05
  */
 public class ShoppingCar {
-    private List<Food> buyList;
-    private Double totalMoney;
+    //购买清单
+    private final List<Food> buyList;
+    //总价
+    private BigDecimal totalMoney;
+    //创建时间
     private Date createTime;
+    //规则链
     private List<String> rules;
-
-    public ShoppingCar() {
-        this.createTime = new Date();
-        this.rules = new ArrayList<>();
-    }
+    //剩余食物
+    private List<Food> leftList;
 
     public ShoppingCar(List<Food> buyList) {
-        this();
-        this.buyList = buyList;
+        this.createTime = new Date();
+        this.totalMoney = BigDecimal.ZERO;
+        this.buyList = Collections.unmodifiableList(buyList);
+        this.rules = new ArrayList<>();
+        this.leftList = buyList;
     }
 
     public List<Food> getBuyList() {
         return buyList;
     }
 
-    public void setBuyList(List<Food> buyList) {
-        this.buyList = buyList;
-    }
-
-    public Double getTotalMoney() {
+    public BigDecimal getTotalMoney() {
         return totalMoney;
     }
 
-    public void setTotalMoney(Double totalMoney) {
+    public void setTotalMoney(BigDecimal totalMoney) {
         this.totalMoney = totalMoney;
     }
 
@@ -58,5 +60,13 @@ public class ShoppingCar {
 
     public void setRules(List<String> rules) {
         this.rules = rules;
+    }
+
+    public List<Food> getLeftList() {
+        return leftList;
+    }
+
+    public void setLeftList(List<Food> leftList) {
+        this.leftList = leftList;
     }
 }

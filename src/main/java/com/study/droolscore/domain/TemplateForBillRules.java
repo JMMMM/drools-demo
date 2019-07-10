@@ -1,6 +1,8 @@
 package com.study.droolscore.domain;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * com.study.droolscore.domain
@@ -11,34 +13,44 @@ import java.util.List;
  * @date 2019-07-05
  */
 public class TemplateForBillRules {
-    private List<String> fooPromotion;
-    private Double pricePromotion;
+    private List<Food> foods;
+    private List<String> foodNames;
+    private BigDecimal pricePromotion;
     private Integer buyListSize;
     private String templateName;
 
     public TemplateForBillRules() {
     }
 
-    public TemplateForBillRules(List<String> fooPromotion, Double pricePromotion, Integer buyListSize, String templateName) {
-        this.fooPromotion = fooPromotion;
+    public TemplateForBillRules(List<Food> foods, BigDecimal pricePromotion, Integer buyListSize, String templateName) {
+        this.foods = foods;
+        this.foodNames = foods.stream().map((x) -> "\"" + x.getName() + "\"").collect(Collectors.toList());
         this.pricePromotion = pricePromotion;
         this.buyListSize = buyListSize;
         this.templateName = templateName;
     }
 
-    public List<String> getFooPromotion() {
-        return fooPromotion;
+    public List<Food> getFoods() {
+        return foods;
     }
 
-    public void setFooPromotion(List<String> fooPromotion) {
-        this.fooPromotion = fooPromotion;
+    public void setFoods(List<Food> foods) {
+        this.foods = foods;
     }
 
-    public Double getPricePromotion() {
+    public List<String> getFoodNames() {
+        return foodNames;
+    }
+
+    public void setFoodNames(List<String> foodNames) {
+        this.foodNames = foodNames;
+    }
+
+    public BigDecimal getPricePromotion() {
         return pricePromotion;
     }
 
-    public void setPricePromotion(Double pricePromotion) {
+    public void setPricePromotion(BigDecimal pricePromotion) {
         this.pricePromotion = pricePromotion;
     }
 
@@ -49,7 +61,6 @@ public class TemplateForBillRules {
     public void setBuyListSize(Integer buyListSize) {
         this.buyListSize = buyListSize;
     }
-
 
     public String getTemplateName() {
         return templateName;

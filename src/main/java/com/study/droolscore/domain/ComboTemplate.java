@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 
 /**
  * com.study.droolscore.domain
@@ -21,7 +22,7 @@ public class ComboTemplate {
     private String templateName;
 
     @Column(name = "combo_price")
-    private Double comboPrice;
+    private BigDecimal comboPrice;
 
     @Column(name = "combo_food_num")
     private Integer comboFoodNum;
@@ -45,11 +46,11 @@ public class ComboTemplate {
         this.templateName = templateName;
     }
 
-    public Double getComboPrice() {
+    public BigDecimal getComboPrice() {
         return comboPrice;
     }
 
-    public void setComboPrice(Double comboPrice) {
+    public void setComboPrice(BigDecimal comboPrice) {
         this.comboPrice = comboPrice;
     }
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class DroolsCoreApplicationTests {
     @Autowired
     KieSession kieSession;
 
-    List<Food> planA = Arrays.asList(new Food("巨无霸", 17D), new Food("可乐", 17D), new Food("薯条", 17D));
+    List<Food> planA = Arrays.asList(new Food("巨无霸", new BigDecimal(17D)), new Food("可乐", new BigDecimal(17D)), new Food("薯条", new BigDecimal(17D)));
     ShoppingCar shoppingCar = new ShoppingCar(planA);
 
     @Test

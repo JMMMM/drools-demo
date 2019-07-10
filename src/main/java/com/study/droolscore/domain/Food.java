@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 
 /**
  * com.study.droolscore.food
@@ -21,12 +22,12 @@ public class Food {
     @Column(name = "name")
     private String name;
     @Column(name = "price")
-    private double price;
+    private BigDecimal price;
 
     public Food() {
     }
 
-    public Food(String name, Double price) {
+    public Food(String name, BigDecimal price) {
         this.name = name;
         this.price = price;
     }
@@ -47,11 +48,11 @@ public class Food {
         this.name = name;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -31,18 +32,17 @@ public class ComboTemplateService {
 
     public List<TemplateForBillRules> createTemplate() {
         List<ComboTemplate> templates = droolsTemplateDao.findAll();
-        String foodIdsStr = templates.stream().map(ComboTemplate::getFoodIds).reduce("", (x, y) -> x + "," + y);
+        String foodIdsStr = templates.stream().map(ComboTemplate::getFoodIds).reduce((x, y) -> x + "," + y).get();
         Set<Integer> foodIds = Arrays.asList(foodIdsStr.split(",")).stream().map(Integer::parseInt).collect(Collectors.toSet());
-        Map<Integer, String> foodNamesMap = foodDao.findAllById(foodIds).stream().collect(Collectors.toMap(Food::getId, Food::getName));
+        Map<Integer, Food> foodNamesMap = foodDao.findAllById(foodIds).stream().collect(Collectors.toMap(Food::getId, Function.identity()));
         return templates.stream().map((template) -> {
             List<String> ids = Arrays.asList(template.getFoodIds().split(","));
-            List<String> foodNames = ids.stream().map((id) -> foodNamesMap.getOrDefault(Integer.parseInt(id), "")).collect(Collectors.toList());
+            List<Food> foodNames = ids.stream().map((id) -> foodNamesMap.get(Integer.parseInt(id))).collect(Collectors.toList());
             return billRulesConverter(template, foodNames);
         }).collect(Collectors.toList());
     }
 
-    private TemplateForBillRules billRulesConverter(ComboTemplate comboTemplate, List<String> foodNames) {
-        List<String> nameFormatter = foodNames.stream().map((name) -> "\"" + name + "\"").collect(Collectors.toList());
-        return new TemplateForBillRules(nameFormatter, comboTemplate.getComboPrice(), comboTemplate.getComboFoodNum(), comboTemplate.getTemplateName());
+    private TemplateForBillRules billRulesConverter(ComboTemplate comboTemplate, List<Food> foods) {
+        return new TemplateForBillRules(foods,comboTemplate.getComboPrice(), comboTemplate.getComboFoodNum(), comboTemplate.getTemplateName());
     }
 }

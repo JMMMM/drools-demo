@@ -1,7 +1,8 @@
 package rules;
 import com.study.droolscore.domain.ShoppingCar;
 import com.study.droolscore.utils.DateUtils;
-import java.util.Date;
+import java.util.Date
+import java.math.BigDecimal;
 
 rule "周一活动"
     salience -2
@@ -11,7 +12,8 @@ rule "周一活动"
     when
         $shoppingCar:ShoppingCar(DateUtils.checkWeekDay(createTime,2))
     then
-        $shoppingCar.setTotalMoney($shoppingCar.getTotalMoney()*0.85);
+        BigDecimal $totalMoney = $shoppingCar.getTotalMoney().multiply(new BigDecimal(0.85D));
+        $shoppingCar.setTotalMoney($totalMoney);
         $shoppingCar.getRules().add(drools.getRule().getName());
         update($shoppingCar);
 end

@@ -30,6 +30,10 @@ public class DroolsTemplateConfiguration {
     @Autowired
     private ComboTemplateService comboTemplateService;
 
+
+//    @Autowired
+//    private ComboTemplateService2 comboTemplateService2;
+
     @Bean
     public KieSession kieSession2() throws IOException {
         KieHelper kieHelper = new KieHelper();

@@ -22,9 +22,10 @@ import java.util.stream.Collectors;
 @RestController
 public class HelloController {
     @Autowired
-    KieSession kieSessionStateFul;
+    private KieSession kieSessionStateFul;
+
     @Autowired
-    FoodDao foodDao;
+    private FoodDao foodDao;
 
     @RequestMapping("/hello")
     public String hello(HttpServletRequest request) {
@@ -34,6 +35,7 @@ public class HelloController {
         ShoppingCar shoppingCar = new ShoppingCar(demo);
         kieSessionStateFul.insert(shoppingCar);
         kieSessionStateFul.fireAllRules();
+        System.out.println(kieSessionStateFul.getGlobal("runningCount"));
         return "总价：" + shoppingCar.getTotalMoney() + "</br>" + "调用链:" + shoppingCar.getRules().toString();
     }
 }

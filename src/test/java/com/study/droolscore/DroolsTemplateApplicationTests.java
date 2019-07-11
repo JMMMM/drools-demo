@@ -51,15 +51,14 @@ public class DroolsTemplateApplicationTests {
         //巨无霸套餐
 //        List<Food> demo = foodDao.findAllById(Arrays.asList(1, 2, 5));
 //        //无套餐
-//        List<Food> demo = foodDao.findAllById(Arrays.asList(2, 5));
+        List<Food> demo = foodDao.findAllById(Arrays.asList(2, 5));
         //所有套餐
-        List<Food> demo =foodDao.findAllById(Arrays.asList(1,2,3,4,5,6,7,8));
+//        List<Food> demo =foodDao.findAllById(Arrays.asList(1,2,3,4,5,6,7,8));
         shoppingCar = new ShoppingCar(demo);
     }
 
     @Test
     public void testHelloWord() {
-        kieSessionStateFul.setGlobal("a", new Integer(0));
         kieSessionStateFul.insert(shoppingCar);
         kieSessionStateFul.fireAllRules();
         System.out.println(shoppingCar.getTotalMoney());
@@ -73,7 +72,6 @@ public class DroolsTemplateApplicationTests {
      */
     @Test
     public void stateFulTest(){
-        kieSessionStateFul.setGlobal("a", new Integer(0));
         List<ShoppingCar> shoppingCars = new ArrayList<ShoppingCar>();
         for(int i =0;i<10;i++){
             List<Food> demo =foodDao.findAllById(Arrays.asList(1,2,3,4,5,6,7,8));

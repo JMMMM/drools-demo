@@ -20,7 +20,7 @@ rule "没有套餐"
        $shoppingCar:ShoppingCar($foods:leftList)
        $money:BigDecimal() from accumulate(Food($price:price) from $foods,
              init(BigDecimal total = BigDecimal.ZERO;),
-             action(total.subtract($price);),
+             action(total = total.add($price);),
              result(total))
   then
         $foods.removeAll($foods);

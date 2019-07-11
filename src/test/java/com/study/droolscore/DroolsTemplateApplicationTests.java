@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,31 +60,29 @@ public class DroolsTemplateApplicationTests {
     }
 
     @Test
-    public void testHelloWord() {
-        kieSessionStateLess.execute(shoppingCar);
+    public void kieSessionStateFulTest() {
+        kieSessionStateFul.insert(shoppingCar);
+        kieSessionStateFul.fireAllRules();
         System.out.println(shoppingCar.getTotalMoney());
         System.out.println("调用链：" + shoppingCar.getRules().toString());
     }
 
     /**
-     * 是否线程安全呢？
-     * 由于KieSession默认是有状态的session，于是进行如下测试
-     * 这个测试是for循环执行触发，debug看看现象
+     * 有状态的会话测试
+     * 这里的问题要到javademo里面解释
+     * com.droolstest.drools.StateFulSessionTestDemo
      */
     @Test
     public void stateFulTest(){
-        List<ShoppingCar> shoppingCars = new ArrayList<ShoppingCar>();
-        for(int i =0;i<10;i++){
-            List<Food> demo =foodDao.findAllById(Arrays.asList(1,2,3,4,5,6,7,8));
-            ShoppingCar shoppingCar2 = new ShoppingCar(demo);
-            shoppingCars.add(shoppingCar2);
-            kieSessionStateFul.insert(shoppingCar2);
-        }
+        kieSessionStateFul.insert(shoppingCar);
         kieSessionStateFul.fireAllRules();
-        for(ShoppingCar shoppingCar :shoppingCars){
-            System.out.println(shoppingCar.getTotalMoney());
-            System.out.println("调用链：" + shoppingCar.getRules().toString());
-        }
+        System.out.println(shoppingCar.getTotalMoney());
+        System.out.println("调用链：" + shoppingCar.getRules().toString());
+        List<Food> demo2 = foodDao.findAllById(Arrays.asList(2, 5));
+        kieSessionStateFul.insert(demo2);
+        kieSessionStateFul.fireAllRules();
+        System.out.println(shoppingCar.getTotalMoney());
+        System.out.println("调用链：" + shoppingCar.getRules().toString());
     }
 
     @Autowired

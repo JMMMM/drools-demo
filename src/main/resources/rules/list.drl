@@ -3,7 +3,6 @@ import com.study.droolscore.domain.Food;
 import java.util.List;
 import com.study.droolscore.domain.ShoppingCar;
 import java.math.BigDecimal;
-
 //这里是第一次演示用的
 //rule "plan-A" when
 //      $shoppingCar:ShoppingCar($foods:buyList)
@@ -17,7 +16,6 @@ rule "没有套餐"
   salience -1
   no-loop true
   lock-on-active true
-  agenda-group "foods_combine"
   when
        $shoppingCar:ShoppingCar($foods:leftList)
        $money:BigDecimal() from accumulate(Food($price:price) from $foods,
@@ -29,6 +27,5 @@ rule "没有套餐"
         BigDecimal $totalMoney = $shoppingCar.getTotalMoney().add($money);
         $shoppingCar.setTotalMoney($totalMoney);
         $shoppingCar.getRules().add(drools.getRule().getName());
-        update($shoppingCar);
+        retract($shoppingCar);
 end
-

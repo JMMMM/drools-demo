@@ -8,7 +8,6 @@ rule "周一活动"
     salience -2
     no-loop true
     lock-on-active true
-    agenda-group "foods_combine"
     when
         $shoppingCar:ShoppingCar(DateUtils.checkWeekDay(createTime,2))
     then

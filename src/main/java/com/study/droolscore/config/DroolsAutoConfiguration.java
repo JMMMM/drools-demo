@@ -42,6 +42,11 @@ public class DroolsAutoConfiguration {
         return resourcePatternResolver.getResources("classpath*:" + RULES_PATH + "**/*.drl");
     }
 
+    /**
+     * KieContainer就是一个KieBase的容器，可以根据kmodule.xml 里描述的KieBase信息来获取具体的KieSession
+     * @return
+     * @throws IOException
+     */
     @Bean
     @ConditionalOnMissingBean(KieContainer.class)
     public KieContainer kieContainer() throws IOException {

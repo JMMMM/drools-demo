@@ -5,6 +5,7 @@ import com.study.droolscore.service.ComboTemplateService;
 import org.drools.template.ObjectDataCompiler;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.StatelessKieSession;
 import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.utils.KieHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class DroolsTemplateConfiguration {
 //    private ComboTemplateService2 comboTemplateService2;
 
     @Bean
-    public KieSession kieSession2() throws IOException {
+    public KieHelper kieHelper() throws IOException {
         KieHelper kieHelper = new KieHelper();
         ObjectDataCompiler objectDataCompiler = new ObjectDataCompiler();
         List<TemplateForBillRules> templates = comboTemplateService.createTemplate();
@@ -48,7 +49,29 @@ public class DroolsTemplateConfiguration {
                 kieHelper.addResource(ResourceFactory.newClassPathResource(RULES_PATH + resource.getFilename(), "UTF-8"));
             }
         }
-        return kieHelper.build().newKieSession();
+        return kieHelper;
+    }
+
+    /**
+     * 有状态session（默认）
+     *
+     * @return
+     * @throws IOException
+     */
+    @Bean
+    public KieSession kieSessionStateFul() throws IOException {
+        return kieHelper().build().newKieSession();
+    }
+
+    /**
+     * 无状态session
+     *
+     * @return
+     * @throws IOException
+     */
+    @Bean
+    public StatelessKieSession kieSessionStateLess() throws IOException {
+        return kieHelper().build().newStatelessKieSession();
     }
 
     private Resource[] getRuleFiles() throws IOException {

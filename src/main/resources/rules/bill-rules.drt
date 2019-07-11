@@ -17,7 +17,6 @@ rule "@{templateName}"
   salience @{promotionPrice}
   no-loop true
   lock-on-active true
-  agenda-group "foods_combine"
   when
       $shoppingCar:ShoppingCar($foods:leftList,leftList.size()>0)
       $combineList:List(size==@{buyListSize}) from collect(Food(@{foodNames} contains name) from $foods)

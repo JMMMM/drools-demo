@@ -7,10 +7,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.StatelessKieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class DroolsTemplateApplicationTests {
     }
 
     @Autowired
-    KieSession kieSession2;
+    KieSession kieSessionStateFul;
 
     @Autowired
     FoodDao foodDao;
@@ -57,11 +59,41 @@ public class DroolsTemplateApplicationTests {
 
     @Test
     public void testHelloWord() {
-        kieSession2.getAgenda().getAgendaGroup("foods_combine").setFocus();
-        kieSession2.insert(shoppingCar);
-        kieSession2.fireAllRules();
+        kieSessionStateFul.setGlobal("a", new Integer(0));
+        kieSessionStateFul.insert(shoppingCar);
+        kieSessionStateFul.fireAllRules();
         System.out.println(shoppingCar.getTotalMoney());
         System.out.println("调用链：" + shoppingCar.getRules().toString());
     }
 
+    /**
+     * 是否线程安全呢？
+     * 由于KieSession默认是有状态的session，于是进行如下测试
+     * 这个测试是for循环执行触发，debug看看现象
+     */
+    @Test
+    public void stateFulTest(){
+        kieSessionStateFul.setGlobal("a", new Integer(0));
+        List<ShoppingCar> shoppingCars = new ArrayList<ShoppingCar>();
+        for(int i =0;i<10;i++){
+            List<Food> demo =foodDao.findAllById(Arrays.asList(1,2,3,4,5,6,7,8));
+            ShoppingCar shoppingCar2 = new ShoppingCar(demo);
+            shoppingCars.add(shoppingCar2);
+            kieSessionStateFul.insert(shoppingCar2);
+        }
+        kieSessionStateFul.fireAllRules();
+        for(ShoppingCar shoppingCar :shoppingCars){
+            System.out.println(shoppingCar.getTotalMoney());
+            System.out.println("调用链：" + shoppingCar.getRules().toString());
+        }
+    }
+
+    @Autowired
+    private StatelessKieSession statelessKieSession;
+    @Test
+    public void stateLessTest(){
+        statelessKieSession.execute(shoppingCar);
+        System.out.println(shoppingCar.getTotalMoney());
+        System.out.println("调用链：" + shoppingCar.getRules().toString());
+    }
 }

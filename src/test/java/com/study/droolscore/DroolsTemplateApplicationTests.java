@@ -42,6 +42,9 @@ public class DroolsTemplateApplicationTests {
     KieSession kieSessionStateFul;
 
     @Autowired
+    StatelessKieSession kieSessionStateLess;
+
+    @Autowired
     FoodDao foodDao;
 
     ShoppingCar shoppingCar;
@@ -59,8 +62,7 @@ public class DroolsTemplateApplicationTests {
 
     @Test
     public void testHelloWord() {
-        kieSessionStateFul.insert(shoppingCar);
-        kieSessionStateFul.fireAllRules();
+        kieSessionStateLess.execute(shoppingCar);
         System.out.println(shoppingCar.getTotalMoney());
         System.out.println("调用链：" + shoppingCar.getRules().toString());
     }

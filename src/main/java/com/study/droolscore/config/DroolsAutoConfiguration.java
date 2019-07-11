@@ -52,19 +52,33 @@ public class DroolsAutoConfiguration {
         return getKieServices().newKieContainer(kieRepository.getDefaultReleaseId());
     }
 
+    /**
+     * 根据KieSession可以理解成一次规则创建一次session，也可以复用，但是内部的global对象也会共享
+     * @return
+     * @throws IOException
+     */
     @Bean
     @ConditionalOnMissingBean(KieSession.class)
     public KieSession kieSession() throws IOException {
         return kieContainer().newKieSession();
     }
 
+    /*
+     *  As http://docs.jboss.org/drools/release/6.2.0.CR1/drools-docs/html/ch.kie.spring.html
+     *  mentions: Without the org.kie.spring.KModuleBeanFactoryPostProcessor bean definition,
+     *  the kie-spring integration will not work
+     */
     @Bean
     @ConditionalOnMissingBean(KModuleBeanFactoryPostProcessor.class)
     public KModuleBeanFactoryPostProcessor kiePostProcessor() {
         return new KModuleBeanFactoryPostProcessor();
     }
 
-    //这里本来就是单例模式
+    /**
+     * 这里本来就是单例模式
+     * 根据各个kie.jar内部的kie.conf进行加载，这里有点像spi，但是加载方式他是自己写的。
+     * 就是对kieService做基础的初始化操作
+     */
     @Bean
     @ConditionalOnMissingBean(KieServices.class)
     public KieServices getKieServices() {

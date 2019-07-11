@@ -69,4 +69,20 @@ public class ShoppingCar {
     public void setLeftList(List<Food> leftList) {
         this.leftList = leftList;
     }
+
+    @Override
+    public String toString() {
+        return "ShoppingCar{" +
+                "buyList=" + buyList +
+                ", totalMoney=" + totalMoney +
+                ", createTime=" + createTime +
+                ", rules=" + rules +
+                ", leftList=" + leftList +
+                '}';
+    }
+
+    public boolean test(){
+        System.out.println(toString());
+        return true;
+    }
 }

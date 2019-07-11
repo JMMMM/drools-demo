@@ -17,7 +17,7 @@ rule "没有套餐"
   no-loop true
   lock-on-active true
   when
-       $shoppingCar:ShoppingCar($foods:leftList)
+       $shoppingCar:ShoppingCar($foods:leftList,leftList.size()>0)
        $money:BigDecimal() from accumulate(Food($price:price) from $foods,sum($price))
   then
         $foods.removeAll($foods);

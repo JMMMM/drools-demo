@@ -51,9 +51,9 @@ public class DroolsTemplateApplicationTests {
         //巨无霸套餐
 //        List<Food> demo = foodDao.findAllById(Arrays.asList(1, 2, 5));
 //        //无套餐
-        List<Food> demo = foodDao.findAllById(Arrays.asList(2, 5));
+//        List<Food> demo = foodDao.findAllById(Arrays.asList(2, 5));
         //所有套餐
-//        List<Food> demo =foodDao.findAllById(Arrays.asList(1,2,3,4,5,6,7,8));
+        List<Food> demo =foodDao.findAllById(Arrays.asList(1,2,3,4,5,6,7,8));
         shoppingCar = new ShoppingCar(demo);
     }
 

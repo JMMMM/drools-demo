@@ -18,10 +18,7 @@ rule "没有套餐"
   lock-on-active true
   when
        $shoppingCar:ShoppingCar($foods:leftList)
-       $money:BigDecimal() from accumulate(Food($price:price) from $foods,
-             init(BigDecimal total = BigDecimal.ZERO;),
-             action(total = total.add($price);),
-             result(total))
+       $money:BigDecimal() from accumulate(Food($price:price) from $foods,sum($price))
   then
         $foods.removeAll($foods);
         BigDecimal $totalMoney = $shoppingCar.getTotalMoney().add($money);

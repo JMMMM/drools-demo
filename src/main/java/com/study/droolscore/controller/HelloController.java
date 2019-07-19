@@ -49,7 +49,7 @@ public class HelloController {
      * 看看创建一个kieSession究竟占用内存大不大
      */
     @RequestMapping("/kieSessionMemoryCheck")
-    public void refresh() {
+    public void kieSessionMemoryCheck() {
         long startTime = System.currentTimeMillis();
         LogUtils.printMemoryInfo("before", "com.study.droolscore.controller.HelloController", "refresh", 0);
         List<KieSession> kieSessions = new ArrayList<>(100000);
@@ -57,6 +57,24 @@ public class HelloController {
             kieSessions.add(kieContainer.newKieSession());
         }
         LogUtils.printMemoryInfo("after", "com.study.droolscore.controller.HelloController", "refresh", System.currentTimeMillis() - startTime);
-
     }
+//
+//    @RequestMapping("/hello2")
+//    public String hello2(HttpServletRequest request){
+//        String idsStr = request.getParameter("ids");
+//        List<Integer> ids = Arrays.asList(idsStr.split(",")).stream().map(x -> Integer.valueOf(x)).collect(Collectors.toList());
+//        List<Food> demo = foodDao.findAllById(ids);
+//        ShoppingCar shoppingCar = new ShoppingCar(demo);
+//        KieContainer kieContainer = KieContainerCreatetor.getInstance();
+//        KieSession kieSessionStateFul =  kieContainer.newKieSession();
+//        kieSessionStateFul.insert(shoppingCar);
+//        kieSessionStateFul.fireAllRules();
+//        System.out.println(kieSessionStateFul.getGlobal("runningCount"));
+//        return "总价：" + shoppingCar.getTotalMoney() + "</br>" + "调用链:" + shoppingCar.getRules().toString();
+//    }
+//
+//    @RequestMapping("/refresh")
+//    public void refresh() {
+//        KieContainerCreatetor.reCreate();
+//    }
 }

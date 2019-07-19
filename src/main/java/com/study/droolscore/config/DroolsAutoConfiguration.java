@@ -30,7 +30,7 @@ public class DroolsAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(KieFileSystem.class)
     public KieFileSystem kieFileSystem() throws IOException {
-        KieFileSystem kieFileSystem = getKieServices().newKieFileSystem();
+        KieFileSystem kieFileSystem = kieServices().newKieFileSystem();
         for (Resource file : getRuleFiles()) {
             kieFileSystem.write(ResourceFactory.newClassPathResource(RULES_PATH + file.getFilename(), "UTF-8"));
         }
@@ -50,11 +50,11 @@ public class DroolsAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(KieContainer.class)
     public KieContainer kieContainer() throws IOException {
-        final KieRepository kieRepository = getKieServices().getRepository();
+        final KieRepository kieRepository = kieServices().getRepository();
         kieRepository.addKieModule(() -> kieRepository.getDefaultReleaseId());
-        KieBuilder kieBuilder = getKieServices().newKieBuilder(kieFileSystem());
+        KieBuilder kieBuilder = kieServices().newKieBuilder(kieFileSystem());
         kieBuilder.buildAll();
-        return getKieServices().newKieContainer(kieRepository.getDefaultReleaseId());
+        return kieServices().newKieContainer(kieRepository.getDefaultReleaseId());
     }
 
     /**
@@ -86,7 +86,7 @@ public class DroolsAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(KieServices.class)
-    public KieServices getKieServices() {
+    public KieServices kieServices() {
         System.setProperty("drools.dateformat", "yyyy-MM-dd");
         return KieServices.Factory.get();
     }

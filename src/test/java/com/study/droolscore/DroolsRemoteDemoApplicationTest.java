@@ -62,7 +62,6 @@ public class DroolsRemoteDemoApplicationTest {
         KieModule kieModule = kieRepository.addKieModule(kieServices.getResources().newInputStreamResource(is));
         KieContainer kieContainer = kieServices.newKieContainer(kieModule.getReleaseId());
         KieSession kieSession = kieContainer.newKieSession();
-        kieSession.getAgenda().getAgendaGroup("foods_combine").setFocus();
         kieSession.insert(shoppingCar);
         kieSession.fireAllRules();
         System.out.println(shoppingCar.getTotalMoney());

@@ -14,6 +14,7 @@ rule "周一活动"
         BigDecimal $totalMoney = $shoppingCar.getTotalMoney().multiply(new BigDecimal(0.85D));
         $shoppingCar.setTotalMoney($totalMoney);
         $shoppingCar.getRules().add(drools.getRule().getName());
-        update($shoppingCar);
+        //这里可以演示一下update的效果
+//        update($shoppingCar);
 end
 
